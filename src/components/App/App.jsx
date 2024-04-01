@@ -9,13 +9,31 @@ import Filter from '../Filter/Filter';
 class App extends Component {
   state = {
     contacts: [
-      { id: 'id-1', name: 'Steve Jobs', number: '459-12-56' },
-      { id: 'id-2', name: 'Bill Gates', number: '443-89-12' },
-      { id: 'id-3', name: 'Jeff Bezos', number: '645-17-79' },
-      { id: 'id-4', name: 'Elon Musk', number: '227-91-26' },
+      { id: 'id-1', name: 'Larry Page', number: '459-12-56' },
+      { id: 'id-2', name: 'Jeff Bezos', number: '443-89-12' },
+      { id: 'id-3', name: 'Richard Branson', number: '645-17-79' },
+      { id: 'id-4', name: 'Mark Zuckerberg', number: '227-91-26' },
     ],
     filter: '',
   };
+
+  // Збереження контактів у localStorage
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts'); // Отримуємо дані із localStorage.
+    const parsedContacts = JSON.parse(contacts); // Перетворюємо дані з рядка JSON на об'єкт JavaScript.
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts }); // Встановлюємо отримані контакти в об'єкт "contacts".
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      // Порівнюємо поточні контакти із попереднім об'єктом контактів.
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      // Якщо контакти змінилися, зберігаємо їх у localStorage.
+    }
+  }
 
   // Додавання нового контакту до списку контактів
   addContact = contact => {
